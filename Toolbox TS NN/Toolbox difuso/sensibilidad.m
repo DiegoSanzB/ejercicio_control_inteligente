@@ -1,4 +1,5 @@
-function [p, indice, model]=sensibilidad(yent,Xent,reglas)
+function [p, indice, model] = sensibilidad(yent, Xent, reglas)
+
 % Calcula el indice de sensibilidad de cada regresor con respecto a su
 % salida
 % yent: Salida del modelo para el conjunto de entrenamiento
@@ -92,8 +93,5 @@ for  i=1:length(Xent(1,:))
 end
 p=find(indice==min(indice));
 %se grafican los indices obtenidos para compararse
-figure ()
-bar(indice)
-ylabel('Índice de sensibilidad')
-xlabel('Entrada del modelo')  
+
 end

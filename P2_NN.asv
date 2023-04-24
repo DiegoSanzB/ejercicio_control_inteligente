@@ -3,7 +3,7 @@ clc
 
 %% Creamos datos y los ploteamos
 
-addpath("C:\Users\mp204\OneDrive\Desktop\2023\Control Inteligente\ejercicio_control_inteligente-ejercicio_1\ejercicio_control_inteligente-ejercicio_1\Toolbox TS NN\Toolbox NN")
+addpath("C:\Users\mp204\OneDrive\Desktop\2023\Control Inteligente\ejercicio_control_inteligente-ejercicio_1\ejercicio_control_inteligente-ejercicio_1\Toolbox TS NN\Toolbox difuso")
 addpath("C:\Users\mp204\OneDrive\Desktop\2023\Control Inteligente\ejercicio_control_inteligente-ejercicio_1\ejercicio_control_inteligente-ejercicio_1\P2_COV")
 
 U = generate_aprbs(0.01, 100, 0.5, 5, -2, 2);
@@ -68,7 +68,9 @@ y_hat_ = my_ann_evaluation(net_optim_structure, x_optim_test');
 
 % Llamada a la función calcular_intervalos_cov
 target_porcentaje = 0.95;
-[alfa_optimo, alfas, porcentaje_datos] = calcular_intervalos_cov_NN(x_optim_ent, x_optim_test, x_optim_val, net_optim_structure, Y, y_hat_, y_hat, target_porcentaje);  
+[alfa_optimo, alfas, porcentaje_datos] = calcular_intervalos_cov_NN(x_optim_ent, x_optim_test, x_optim_val, net_optim_structure, Y, y_hat_, y_hat, target_porcentaje);
+
+legend('Valor real', 'Valor esperado')
 
 legend('Valor real', 'Intervalo de confianza')
 
@@ -92,7 +94,7 @@ hold on
 plot(y_hat_upper, 'k', 'LineWidth', .1);
 x2 = [x, fliplr(x)];
 inBetween = [y_hat_lower, fliplr(y_hat_upper)];
-fill(x2, inBetween, 'black', 'FaceAlpha', 0.3,'EdgeColor', 'red','EdgeAlpha', 0.5, 'DisplayName', 'Intervalo de confianza');
+fill(x2, inBetween, 'black', 'FaceAlpha', 0.3, 'DisplayName', 'Intervalo de confianza');
 xlabel('Índice')
 ylabel('Valores')
 set(gcf, 'color', 'w');
