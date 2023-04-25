@@ -21,11 +21,12 @@ function graficar_intervalos(Y, Y_, y_upper, y_lower)
     y_fill = [y_lower', fliplr(y_upper')];
     fill(x_fill, y_fill, 'black', 'FaceAlpha', 0.3, 'EdgeColor', 'red','EdgeAlpha', 0.3, 'DisplayName', 'Intervalo de confianza');
     % Configurar el título, los ejes y la leyenda
-    xlabel('Tiempo [k]')
-    ylabel('Salida y(k)')
-    title('Comparación de datos reales e intervalo de confianza, método covarianza');
+    xlabel('Tiempo [k]','FontSize', 15)
+    ylabel('Salida y(k)','FontSize', 15)
+    title('Comparación de datos reales e intervalo de confianza, método covarianza','FontSize', 18);
     legend('show');
     grid on;
+    set(gcf,'color','w');
     hold off;
 end
 

@@ -35,9 +35,9 @@ function [alfa,alfas,porcentaje_datos_vec] = calcular_alfa(Y_, Y, Izk, target_po
     % Crear una nueva figura para el gráfico de alfa vs porcentaje de cobertura
     figure;
     plot(alfas, porcentaje_datos_vec, 'o-', 'MarkerSize', 1.5, 'MarkerEdgeColor', 'blue', 'MarkerFaceColor', 'blue', 'DisplayName', 'Alfa vs Porcentaje de cobertura', 'LineWidth', 2);
-    xlabel('Alfa');
-    ylabel('Porcentaje de cobertura');
-    title('Relación entre Alfa y Porcentaje de cobertura');
+    xlabel('Alfa','FontSize', 15);
+    ylabel('Porcentaje de cobertura','FontSize', 15);
+    title('Relación entre Alfa y Porcentaje de cobertura','FontSize', 18');
     legend('show');
     grid on;
 end

@@ -52,6 +52,7 @@ function [min_rmse, best_y_hat, modelf, best_x_optim_ent, best_x_optim_test,  be
         x_optim_val_hist{iter} =  x_optim_val;
 
         % Calcular la sensibilidad
+            
         [p, indices] = sensibilidad(Y.test, x_optim_test, clusters);
         
         % Encontrar el índice del valor mínimo

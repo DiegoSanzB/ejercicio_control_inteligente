@@ -1,10 +1,10 @@
-function pinaw = compute_pinaw_nn(net, x, Y, s_l, s_u)
+function pinaw = compute_pinaw_nn(net, x, y_test, s_l, s_u)
 % Computes PINAW of x given a model and spreds
 
 [y_hat_lower, y_hat_upper] = ysim_lower_upper_nn(net, x, s_l, s_u);
 
 [n, ~] = size(x);
-r = max(Y.val) - min(Y.val);
+r = max(y_test) - min(y_test);
 
 pinaw = 0;
 
