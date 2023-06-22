@@ -5,7 +5,8 @@ clc
 %% (a) %%
 
 addpath('ejercicio_2\p2\')
-addpath('ejercicio_2\p2\Toolbox difuso\')
+addpath('ejercicio_2\p2\toolbox_difuso\')
+addpath('ejercicio_2\p2\toolbox_b\')
 
 % Cargamos data
 load('temperatura_10min.mat');
