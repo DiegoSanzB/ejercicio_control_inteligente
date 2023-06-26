@@ -9,7 +9,7 @@ delta = 0.7;
 delta_temperatura = 13; % °C
 w = wgn(1, 1, 0.001, 'linear');
 
-B = cp*(1 - delta)*(Ta - T_1_k);
+B = cp*(1 - delta)*(T_a - T_1_k);
 
 % T_1(k+1)
-T_1 = T_1_k + delta_t/c1*(U*(B + delta_t*cp) + (T_2_k - T_1_k)/R + (T_a - T_1_k)/R_a + w);
+T_1 = T_1_k + delta_t/c1*(U*(B + delta_temperatura*cp) + (T_2_k - T_1_k)/R + (T_a - T_1_k)/R_a + w);
