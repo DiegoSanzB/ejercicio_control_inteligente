@@ -40,18 +40,20 @@ figure;
 set(gcf, 'color', 'white');  % Establece el color de fondo de la figura a blanco
 subplot(1, 2, 1);
 imagesc(f_star_pso);
-colorbar;
-title('Mapa de calor de f(x,y) (PSO)');
-xlabel('Número de Iteraciones');
-ylabel('Tamaño del Enjambre');
+c1 = colorbar;
+ylabel(c1, 'f(x,y)','FontSize', 16)
+title('Mapa de calor de f(x,y) (PSO)','FontSize', 16);
+xlabel('Número de Iteraciones','FontSize', 16);
+ylabel('Tamaño del Enjambre','FontSize', 16);
 set(gca, 'YTick', 1:length(swarm_sizes), 'YTickLabel', 2:max(swarm_sizes), 'XTick', 1:length(n_iterations_pso), 'XTickLabel', 2:max(n_iterations_pso));
 
 subplot(1, 2, 2);
 imagesc(time_pso);
-colorbar;
-title('Mapa de calor de Tiempo de Ejecución (PSO)');
-xlabel('Número de Iteraciones');
-ylabel('Tamaño del Enjambre');
+c2 = colorbar;
+ylabel(c2, 'Tiempo de ejecución','FontSize', 16);
+title('Mapa de calor de Tiempo de Ejecución (PSO)','FontSize', 16);
+xlabel('Número de Iteraciones','FontSize', 16);
+ylabel('Tamaño del Enjambre','FontSize', 16);
 set(gca, 'YTick', 1:length(swarm_sizes), 'YTickLabel', 2:max(swarm_sizes), 'XTick', 1:length(n_iterations_pso), 'XTickLabel', 2:max(n_iterations_pso));
 
 % Crear mapas de calor para GA
@@ -59,16 +61,110 @@ figure;
 set(gcf, 'color', 'white');  % Establece el color de fondo de la figura a blanco
 subplot(1, 2, 1);
 imagesc(f_star_ga);
-colorbar;
-title('Mapa de calor de f(x,y) (GA)');
-xlabel('Número de Iteraciones');
-ylabel('Tamaño de la Población');
+c3 = colorbar;
+ylabel(c3, 'f(x, y)','FontSize', 16);
+title('Mapa de calor de f(x,y) (GA)','FontSize', 16);
+xlabel('Número de Iteraciones','FontSize', 16);
+ylabel('Tamaño de la Población','FontSize', 16);
 set(gca, 'YTick', 1:length(population_size), 'YTickLabel', 1:max(population_size), 'XTick', 1:length(n_iterations_ga), 'XTickLabel',1:max(n_iterations_ga));
 
 subplot(1, 2, 2);
 imagesc(time_ga);
-colorbar;
-title('Mapa de calor de Tiempo de Ejecución (GA)');
-xlabel('Número de Iteraciones');
-ylabel('Tamaño de la Población');
+c4 = colorbar;
+ylabel(c4, 'Tiempo de ejecución','FontSize', 16);
+title('Mapa de calor de Tiempo de Ejecución (GA)','FontSize', 16);
+xlabel('Número de Iteraciones','FontSize', 16);
+ylabel('Tamaño de la Población','FontSize', 16);
 set(gca, 'YTick', 1:length(population_size), 'YTickLabel', 1:max(population_size), 'XTick', 1:length(n_iterations_ga), 'XTickLabel', 1:max(n_iterations_ga));
+
+% Ignorar la primera fila de f_star_ga y time_ga
+f_star_ga = f_star_ga(2:end, 2:end);
+time_ga = time_ga(2:end, 2:end);
+
+% Ahora, f_star_ga y f_star_pso, así como time_ga y time_pso deben tener el mismo tamaño (29x29)
+
+% Crear gráfico de dispersión para comparar la salida f(x,y) entre PSO y GA
+figure;
+set(gcf, 'color', 'white');
+scatter(reshape(f_star_pso, 1, []), reshape(f_star_ga, 1, []), 'filled');
+xlabel('f(x,y) PSO', 'FontSize', 16);
+ylabel('f(x,y) GA', 'FontSize', 16);
+title('Comparación de f(x,y) entre PSO y GA', 'FontSize', 16);
+grid on;
+
+% Crear gráfico de dispersión para comparar el tiempo de ejecución entre PSO y GA
+figure;
+set(gcf, 'color', 'white');
+scatter(reshape(time_pso, 1, []), reshape(time_ga, 1, []), 'filled');
+xlabel('Tiempo de ejecución PSO', 'FontSize', 16);
+ylabel('Tiempo de ejecución GA', 'FontSize', 16);
+title('Comparación de Tiempo de Ejecución entre PSO y GA', 'FontSize', 16);
+grid on;
+
+% Ahora, f_star_ga y f_star_pso, así como time_ga y time_pso deben tener el mismo tamaño (29x29)
+%%
+% Crear gráfico de dispersión para comparar f(x,y) y tiempo de ejecución
+figure;
+set(gcf, 'color', 'white');
+
+% Puntos para PSO
+scatter(reshape(time_pso, 1, []), reshape(f_star_pso, 1, []), 'filled', 'MarkerFaceColor', 'r');
+hold on;
+
+% Puntos para GA
+scatter(reshape(time_ga, 1, []), reshape(f_star_ga, 1, []), 'filled', 'MarkerFaceColor', 'b');
+
+xlabel('Tiempo de Ejecución', 'FontSize', 16);
+ylabel('f(x, y)', 'FontSize', 16);
+title('Comparación de f(x, y) y Tiempo de Ejecución entre PSO y GA', 'FontSize', 16);
+legend('PSO', 'GA', 'Location', 'best', 'FontSize', 16);
+grid on;
+
+f_min = -19.20850; % Debes definir esto como el valor mínimo conocido de la función
+
+% Calcula los errores
+errores_pso = f_star_pso(:) - f_min;
+errores_ga = f_star_ga(:) - f_min;
+
+figure;
+set(gcf, 'color', 'white'); % Establece el color de fondo de la figura a blanco
+
+% Crea un histograma para los errores de PSO
+subplot(1, 2, 1);
+num_bins_pso = round(sqrt(numel(errores_pso)));
+histogram(errores_pso, num_bins_pso, 'Normalization', 'count'); % O simplemente: histogram(errores_pso, num_bins_pso);
+title('Histograma de Errores (PSO)');
+xlabel('Error');
+ylabel('Frecuencia');
+
+% Crea un histograma para los errores de GA
+subplot(1, 2, 2);
+num_bins_ga = round(sqrt(numel(errores_ga)));
+histogram(errores_ga, num_bins_ga, 'Normalization', 'count'); % O simplemente: histogram(errores_ga, num_bins_ga);
+title('Histograma de Errores (GA)');
+xlabel('Error');
+ylabel('Frecuencia');
+
+figure;
+set(gcf, 'color', 'white');  % Establece el color de fondo de la figura a blanco
+
+% Mapa de calor para PSO
+subplot(1, 2, 1);
+imagesc(f_star_pso);
+c1 = colorbar;
+ylabel(c1, 'f(x,y)','FontSize', 16)
+title('Mapa de calor de f(x,y) óptima (PSO)','FontSize', 16);
+xlabel('Número de Iteraciones','FontSize', 16);
+ylabel('Tamaño del Enjambre','FontSize', 16);
+set(gca, 'YTick', 1:length(swarm_sizes), 'YTickLabel', 2:max(swarm_sizes), 'XTick', 1:length(n_iterations_pso), 'XTickLabel', 2:max(n_iterations_pso));
+
+% Mapa de calor para GA
+subplot(1, 2, 2);
+imagesc(f_star_ga);
+c2 = colorbar;
+ylabel(c2, 'f(x,y)','FontSize', 16)
+title('Mapa de calor de f(x,y) óptima (GA)','FontSize', 16);
+xlabel('Número de Iteraciones','FontSize', 16);
+ylabel('Tamaño de la Población','FontSize', 16);
+set(gca, 'YTick', 1:length(population_size), 'YTickLabel', 1:max(population_size), 'XTick', 1:length(n_iterations_ga), 'XTickLabel', 1:max(n_iterations_ga));
+
