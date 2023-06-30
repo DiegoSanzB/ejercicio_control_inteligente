@@ -30,17 +30,23 @@ minY = Y(idxX, idxY);
 figure
 surf(X,Y,Z);
 hold on; % Mantén la gráfica actual para agregar más elementos
-scatter3(minX, minY, minZ, 100, 'r', 'filled'); % Agregar el punto mínimo como un punto rojo
+
+% Agregar el punto mínimo como un punto rojo y etiqueta para la leyenda
+hMin = scatter3(minX, minY, minZ, 100*3, 'r', 'filled'); % Agregar el punto mínimo como un punto rojo
 
 % Agregar etiqueta de texto con los valores de x, y y z
 str = sprintf('Minimo en x = %.2f, y = %.2f, f(x,y) = %.2f', minX, minY, minZ);
-text(minX, minY, minZ + 1, str, 'HorizontalAlignment', 'center');
+text(minX, minY, minZ + 1, str, 'HorizontalAlignment', 'center','FontSize', 12);
 
-xlabel('x')
-ylabel('y')
-zlabel('f(x, y)')
-title('Gráfica de la función f(x, y) con el mínimo marcado y etiquetado')
+xlabel('x','FontSize', 16)
+ylabel('y','FontSize', 16)
+zlabel('f(x, y)','FontSize', 16)
+title('Gráfica de la función f(x, y) con el mínimo marcado y etiquetado','FontSize', 16)
 shading interp
+
+% Agregar leyenda solo para el punto mínimo
+legend(hMin, 'Punto mínimo','FontSize', 12);
+
 %% fmincon
 
 % Optimización
