@@ -1,0 +1,35 @@
+clear
+clc
+
+Ts = 0.001;
+T_total = 2;
+min_freq = 1;
+max_freq = 5;
+min_amplitude = -0.005;
+max_amplitude = -0.01;
+
+aprbs = generate_aprbs(Ts, T_total, min_freq, max_freq, min_amplitude, max_amplitude);
+plot(aprbs(1, :));
+
+% Calibración del step
+T_sim_ = 5;
+
+% % Damos un primer paso
+% [t_ode, x] = step(-0.5, 0, T_sim_, [-0.02, 0]);
+% figure
+% plot(x(:,1));
+
+% Simulamos los steps de la aprbs con los tiempos de muestreo del sistema
+len = length(aprbs);
+time = 0:Ts:T_total;
+simout = zeros(1,len);
+x_0 = -0.005;
+simout(1,0) = x_0;
+
+for i = 2:len
+    % Simulamos un step
+    [t_ode, x] = step(aprbs(1,i),time(1,i) ,time(1,i)+Ts, simout(i-1));
+    simout(1,i) = x;
+    
+end
+
