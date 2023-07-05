@@ -19,7 +19,7 @@ plot(U);
 grid on;
 title('Datos de Levitador Magnetico simulado con ode 45', 'FontSize', 18);
 xlabel('Tiempo [k]', 'FontSize', 15);
-ylabel('Posición [cm]', 'FontSize', 15);
+ylabel('Posición [m]', 'FontSize', 15);
 
 
 %% Parámetros del modelo %%
@@ -76,5 +76,43 @@ title('Predicción a 1 paso en test', 'FontSize', 18);
 %% Save Model %%
 save('ejercicio_2/p3_ode45/ts/maglev_ts_model.mat', 'model');
 save('ejercicio_2/p3_ode45/ts/regresores_eliminados_modelo_ts.mat', 'eliminated_regressors');
+
+%% Intervalos Difusos %%
+addpath('ejercicio_1/fuzzy_ts/')
+
+s = fuzzy_numbers(model, x_optim_val,Y.val ,100 ,200 ,0.1);
+n = length(s);    
+s_l = s(1:n/2);
+s_u = s(n/2+1:end);
+
+[y_hat_lower, y_hat_upper] = ysim_lower_upper(x_optim_test, model.a, model.b, model.g, s_l, s_u);
+
+%% Plot predicción de intervalos a 1 paso %%
+figure()
+x = 1: length(Y.test);
+plot(Y.test, '.b');
+hold on
+plot(y_hat_lower, 'k', 'LineWidth', .1);
+hold on
+plot(y_hat_upper, 'k', 'LineWidth', .1);
+x2 = [x, fliplr(x)];
+inBetween = [y_hat_lower', fliplr(y_hat_upper')];
+fill(x2, inBetween, 'black', 'FaceAlpha', 0.3, 'EdgeColor', 'red', 'EdgeAlpha', 0.2, 'DisplayName', 'Intervalo de confianza');
+
+xlabel('Tiempo [k]', 'FontSize', 15)
+ylabel('Salida y(k)', 'FontSize', 15)
+set(gcf, 'color', 'w');
+grid on
+title('Comparación de datos reales e intervalo de confianza, método de números difusos', 'FontSize', 18);
+legend('show');
+legend('Valor real', 'Intervalo de confianza')
+% PINAW y PICP
+rmse(y_hat_, Y.test)
+mae(abs(y_hat_ - Y.test))
+compute_picp(model, x_optim_test, Y.test, s_l, s_u)
+compute_pinaw(model, x_optim_test, Y.test, s_l, s_u)
+
+%% Guardamos spreads %%
+save('ejercicio_2/p3_ode45/ts/spreads_ts_model.mat', 's');
 
 % END OF FILE %

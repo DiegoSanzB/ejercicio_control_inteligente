@@ -13,7 +13,7 @@ function cost = cost_function_ts(u, lambda, ref, x0, u0, model, eliminated_regre
         X(:,eliminated_regressors) = [];
         % x1 = Euler_Maglev(x0(1), x0(2), u(i), u(i-1), T_c);
         x1 = ysim(X, model.a, model.b, model.g);
-        cost = cost + (ref - x1)^2;% + lambda *(u(i) - u_prev)^2;
+        cost = cost + (ref - x1)^2 + lambda *(u(i) - u_prev)^2;
         
         x_regs(1, i+regs) = x1;
         u_regs(1, i+regs) = u(i);
@@ -24,4 +24,6 @@ function cost = cost_function_ts(u, lambda, ref, x0, u0, model, eliminated_regre
         % u0(1, 2:end) = u0(1, 1:end-1);
         % u0(1, 1) = u(i);
     end
+    % figure;
+    % plot(x_regs)
 end
