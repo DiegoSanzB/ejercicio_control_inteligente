@@ -4,7 +4,7 @@ close all
  
     % Constantes
     T_c = 0.001;
-    T_sim = 3;
+    T_sim = 6;
     nvars = 100; % número de variables de decisión
     lb = ones(1, nvars) *-1; % límite inferior
     ub = ones(1, nvars)*1 ;  % límite superior
@@ -17,13 +17,17 @@ close all
 min_freq = 0.2;
 max_freq = 0.5;
 
-min_amplitude = 0.025;
-max_amplitude = 0.035;
+min_amplitude = 0.03;
+max_amplitude = 0.04;
 
 aprbs = generate_aprbs(T_c, T_sim, min_freq, max_freq, min_amplitude, max_amplitude);
 ref = aprbs*-1;
 ref = generate_ramp(T_sim, T_c, -1*max_amplitude, -1*min_amplitude);
-ref = generate_sine(T_sim, T_c, -0.004, -0.004, -0.038, min_freq, -1);
+% ref = generate_sine(T_sim, T_c, -0.004, -0.004, -0.038, min_freq, -1);
+
+sigma_s = 300e-4; % desviación estándar del ruido de sensor
+sigma_p = 500e-4; % desviación estandar del ruido de proceso
+
 plot(ref*100)
     U = [];
     X = [];
@@ -46,7 +50,7 @@ for ii = 1:length(ref)
     u = particleswarm(fun, nvars, lb, ub, options);
 
     % Simulamos la acción de control
-    [t_ode, x] = step(u(2), 0, T_c, [x0(1) x0(2)]);
+    [t_ode, x] = step(u(2), 0, T_c, [x0(1) x0(2)], sigma_s, sigma_p);
 
     % Actualizamos condiciones iniciales
     x0 = [x(end,1), x(end,2)]; % Actualiza el estado inicial para el próximo paso
@@ -63,7 +67,7 @@ for ii = 1:length(ref)
 end
 
     
-    
+%%    
     % Gráfica de las salidas y las entradas de control
     figure;
     
