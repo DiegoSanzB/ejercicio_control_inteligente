@@ -10,7 +10,7 @@ function dx = maglev_PD(t, x, u)
     assert(x(1)~=0,'X1 es cero')
 
     dx1 = x2;
-    dx2 = g - k_mag/x1^2 * (K_p * (200*u - x1) - K_d * x2)^2;
+    dx2 = g - k_mag/x1^2 * (K_p * (100*u - x1) - K_d * x2)^2;
 
     dx = [dx1; dx2];
 end

@@ -3,13 +3,13 @@ close all
 clc
 
 %% Load Data %%
-addpath('ejercicio_2/p3_ode45/')
-addpath('ejercicio_2/p3_ode45/ts/')
-addpath('ejercicio_2/toolbox_difuso/')
+addpath('C:\Users\mp204\OneDrive\Desktop\2023\Control Inteligente\ejercicio_control_inteligente-ejercicio_1\ejercicio_control_inteligente-ejercicio_1\ejercicio_2/p3_ode45/')
+addpath('C:\Users\mp204\OneDrive\Desktop\2023\Control Inteligente\ejercicio_control_inteligente-ejercicio_1\ejercicio_control_inteligente-ejercicio_1\ejercicio_2/p3_ode45/ts/')
+addpath('C:\Users\mp204\OneDrive\Desktop\2023\Control Inteligente\ejercicio_control_inteligente-ejercicio_1\ejercicio_control_inteligente-ejercicio_1\ejercicio_2/toolbox_difuso/')
 
-load('maglev_pd_ode_45_data.mat')
+load('maglev_pd_ode_45_data_new.mat')
 data_posicion = simout(1,:).';
-load('aprbs.mat')
+load('aprbs_new.mat')
 U = aprbs;
 
 figure()
@@ -74,8 +74,8 @@ grid on
 title('Predicción a 1 paso en test', 'FontSize', 18);
 
 %% Save Model %%
-save('ejercicio_2/p3_ode45/ts/maglev_ts_model.mat', 'model');
-save('ejercicio_2/p3_ode45/ts/regresores_eliminados_modelo_ts.mat', 'eliminated_regressors');
+save('C:\Users\mp204\OneDrive\Desktop\2023\Control Inteligente\ejercicio_control_inteligente-ejercicio_1\ejercicio_control_inteligente-ejercicio_1\ejercicio_2/p3_ode45/ts/maglev_ts_model_new.mat', 'model');
+save('C:\Users\mp204\OneDrive\Desktop\2023\Control Inteligente\ejercicio_control_inteligente-ejercicio_1\ejercicio_control_inteligente-ejercicio_1\ejercicio_2/p3_ode45/ts/regresores_eliminados_modelo_ts_new.mat', 'eliminated_regressors');
 
 %% Intervalos Difusos %%
 addpath('ejercicio_1/fuzzy_ts/')
@@ -113,6 +113,6 @@ compute_picp(model, x_optim_test, Y.test, s_l, s_u)
 compute_pinaw(model, x_optim_test, Y.test, s_l, s_u)
 
 %% Guardamos spreads %%
-save('ejercicio_2/p3_ode45/ts/spreads_ts_model.mat', 's');
+save('C:\Users\mp204\OneDrive\Desktop\2023\Control Inteligente\ejercicio_control_inteligente-ejercicio_1\ejercicio_control_inteligente-ejercicio_1\ejercicio_2/p3_ode45/ts/spreads_ts_model_new.mat', 's');
 
 % END OF FILE %

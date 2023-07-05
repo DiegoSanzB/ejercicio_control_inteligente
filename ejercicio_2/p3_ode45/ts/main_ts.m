@@ -3,24 +3,24 @@ close all
 clc
 
 %% Load Data and Model %%
-addpath('ejercicio_2/p3_ode45/')
-addpath('ejercicio_2/p3_ode45/ts/')
-addpath('ejercicio_2/toolbox_difuso/')
-addpath('ejercicio_2/p3_ode45/Referencias')
-load('ejercicio_2/p3_ode45/ts/maglev_ts_model.mat')
-load('ejercicio_2/p3_ode45/ts/regresores_eliminados_modelo_ts.mat')
-load('ejercicio_2/p3_ode45/Referencias/ref_rampa.mat')
+addpath('C:\Users\mp204\OneDrive\Desktop\2023\Control Inteligente\ejercicio_control_inteligente-ejercicio_1\ejercicio_control_inteligente-ejercicio_1\ejercicio_2/p3_ode45/')
+addpath('C:\Users\mp204\OneDrive\Desktop\2023\Control Inteligente\ejercicio_control_inteligente-ejercicio_1\ejercicio_control_inteligente-ejercicio_1\ejercicio_2/p3_ode45/ts/')
+addpath('C:\Users\mp204\OneDrive\Desktop\2023\Control Inteligente\ejercicio_control_inteligente-ejercicio_1\ejercicio_control_inteligente-ejercicio_1\ejercicio_2/toolbox_difuso/')
+addpath('C:\Users\mp204\OneDrive\Desktop\2023\Control Inteligente\ejercicio_control_inteligente-ejercicio_1\ejercicio_control_inteligente-ejercicio_1\ejercicio_2/p3_ode45/Referencias')
+load('C:\Users\mp204\OneDrive\Desktop\2023\Control Inteligente\ejercicio_control_inteligente-ejercicio_1\ejercicio_control_inteligente-ejercicio_1\ejercicio_2/p3_ode45/ts/maglev_ts_model_new.mat')
+load('C:\Users\mp204\OneDrive\Desktop\2023\Control Inteligente\ejercicio_control_inteligente-ejercicio_1\ejercicio_control_inteligente-ejercicio_1\ejercicio_2/p3_ode45/ts/regresores_eliminados_modelo_ts_new.mat')
+load('C:\Users\mp204\OneDrive\Desktop\2023\Control Inteligente\ejercicio_control_inteligente-ejercicio_1\ejercicio_control_inteligente-ejercicio_1\ejercicio_2/p3_ode45/Referencias/ref_rampa.mat')
 % load('ejercicio_2/p3_ode45/Referencias/ref_seno.mat')
 % ref = ref + 0.025;
 % Constantes
 T_c = 0.001;
-T_sim = 6;
-nvars = 5; % número de variables de decisión
-lb = ones(1, nvars) *-5; % límite inferior
-ub = ones(1, nvars) * 5 ;  % límite superior
+T_sim = 2;
+nvars = 10; % número de variables de decisión
+lb = ones(1, nvars) *-1; % límite inferior
+ub = ones(1, nvars) * 0.1 ;  % límite superior
 options = optimoptions('particleswarm', 'SwarmSize', 50, 'FunctionTolerance', 1e-4, 'MaxStallIterations', 25);
 % Variables
-lambda = 0.00001;
+lambda = 0.0001;
   
 min_freq = 0.2;
 max_freq = 5;
@@ -55,9 +55,11 @@ for ii = 1:length(ref)
     % Función de costo que se utilizará en PSO
     fun = @(u) cost_function_ts(u, lambda, ref(ii), x0, u0, model, eliminated_regressors, u_prev);
 
-    % Crea una matriz inicial para el enjambre basándose en u
+%     Crea una matriz inicial para el enjambre basándose en u
+    
     initial_swarm = repmat(u, [options.SwarmSize, 1]);
     options.InitialSwarmMatrix = initial_swarm;
+    
 
     % Aplica PSO para optimizar u
     u = particleswarm(fun, nvars, lb, ub, options);
@@ -71,11 +73,13 @@ for ii = 1:length(ref)
     u0(1, 2:end) = u0(1, 1:end-1);
     u0(1, 1) = u(1);
     u_prev = u(1);
-    x2 = x(end,2);
+    x2 = x(end, 2);
 
     U = [U; u(1)];
     X = [X; [x(end,1), x2]];
+    disp(ref(ii))
     disp(x(end,1))
+    disp(u(1))
 
     if any(abs(x(end,1)) > 1)
         disp('Algún valor de X ha superado 1 metro. Deteniendo la simulación, vuelva a simular');
