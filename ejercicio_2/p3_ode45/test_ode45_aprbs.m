@@ -5,7 +5,7 @@ Ts = 0.001;
 T_total = 60;
 
 min_freq = 0.2;
-max_freq = 5;
+max_freq = 1;
 
 min_amplitude = 0.005;
 max_amplitude = 0.01;

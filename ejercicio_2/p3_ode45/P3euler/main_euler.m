@@ -4,7 +4,7 @@ close all
  
     % Constantes
     T_c = 0.001;
-    T_sim = 2;
+    T_sim = 6;
     nvars = 100; % número de variables de decisión
     lb = ones(1, nvars) *-1; % límite inferior
     ub = ones(1, nvars)*1 ;  % límite superior
@@ -15,45 +15,53 @@ close all
     lambda = 0.00001;
   
 min_freq = 0.2;
-max_freq = 5;
+max_freq = 0.5;
 
 min_amplitude = 0.03;
-max_amplitude = 0.03;
+max_amplitude = 0.04;
 
 aprbs = generate_aprbs(T_c, T_sim, min_freq, max_freq, min_amplitude, max_amplitude);
 ref = aprbs*-1;
 ref = generate_ramp(T_sim, T_c, -1*max_amplitude, -1*min_amplitude);
-ref = generate_sine(T_sim, T_c, -0.01, -0.01, -0.03, min_freq, -1);
+% ref = generate_sine(T_sim, T_c, -0.004, -0.004, -0.038, min_freq, -1);
 plot(ref*100)
     U = [];
     X = [];
     count = 0;
     u = ones(1, nvars) * -0.02;  % inicializa u para la primera iteración
     
-    % Iteramos por las distintas acciones de control
-    for ii = 1:length(ref)
-        disp(ii)
-        count = count + 1;
+% Iteramos por las distintas acciones de control
+for ii = 1:length(ref)
+    disp(ii)
+    count = count + 1;
 
-        % Función de costo que se utilizará en PSO
-        fun = @(u) cost_function(u, lambda, ref(ii), T_c, x0);
+    % Función de costo que se utilizará en PSO
+    fun = @(u) cost_function(u, lambda, ref(ii), T_c, x0);
 
-        % Crea una matriz inicial para el enjambre basándose en u
-        initial_swarm = repmat(u, [options.SwarmSize, 1]);
-        options.InitialSwarmMatrix = initial_swarm;
+    % Crea una matriz inicial para el enjambre basándose en u
+    initial_swarm = repmat(u, [options.SwarmSize, 1]);
+    options.InitialSwarmMatrix = initial_swarm;
 
-        % Aplica PSO para optimizar u
-        u = particleswarm(fun, nvars, lb, ub, options);
+    % Aplica PSO para optimizar u
+    u = particleswarm(fun, nvars, lb, ub, options);
 
-        % Simulamos la acción de control
-        
-        [t_ode, x] = step(u(2), 0, T_c, [x0(1) x0(2)]);
-        % Actualizamos condiciones iniciales
-        x0 = [x(end,1), x(end,2)]; % Actualiza el estado inicial para el próximo paso
+    % Simulamos la acción de control
+    [t_ode, x] = step(u(2), 0, T_c, [x0(1) x0(2)]);
 
-        U = [U; u(2)];
-        X = [X; x0];
+    % Actualizamos condiciones iniciales
+    x0 = [x(end,1), x(end,2)]; % Actualiza el estado inicial para el próximo paso
+
+    % Agrega el valor de u y x a las matrices U y X
+    U = [U; u(2)];
+    X = [X; x0];
+
+    % Comprueba si algún valor de x0 supera 2 y en tal caso detén la simulación
+    if any(abs(x0) > 1)
+        disp('Algún valor de X ha superado 1 metro. Deteniendo la simulación, vuelva a simular');
+        break;
     end
+end
+
     
     
     % Gráfica de las salidas y las entradas de control
