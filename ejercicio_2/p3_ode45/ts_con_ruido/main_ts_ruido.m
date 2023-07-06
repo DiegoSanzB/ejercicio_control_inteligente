@@ -9,7 +9,7 @@ addpath('C:\Users\mp204\OneDrive\Desktop\2023\Control Inteligente\ejercicio_cont
 addpath('C:\Users\mp204\OneDrive\Desktop\2023\Control Inteligente\ejercicio_control_inteligente-ejercicio_1\ejercicio_control_inteligente-ejercicio_1\ejercicio_2/p3_ode45/Referencias')
 load('C:\Users\mp204\OneDrive\Desktop\2023\Control Inteligente\ejercicio_control_inteligente-ejercicio_1\ejercicio_control_inteligente-ejercicio_1\ejercicio_2/p3_ode45/ts/maglev_ts_model_new.mat')
 load('C:\Users\mp204\OneDrive\Desktop\2023\Control Inteligente\ejercicio_control_inteligente-ejercicio_1\ejercicio_control_inteligente-ejercicio_1\ejercicio_2/p3_ode45/ts/regresores_eliminados_modelo_ts_new.mat')
-load('C:\Users\mp204\OneDrive\Desktop\2023\Control Inteligente\ejercicio_control_inteligente-ejercicio_1\ejercicio_control_inteligente-ejercicio_1\ejercicio_2/p3_ode45/Referencias/ref_rampa.mat')
+load('C:\Users\mp204\OneDrive\Desktop\2023\Control Inteligente\ejercicio_control_inteligente-ejercicio_1\ejercicio_control_inteligente-ejercicio_1\ejercicio_2/p3_ode45/Referencias/ref_seno.mat')
 % load('ejercicio_2/p3_ode45/Referencias/ref_seno.mat')
 % ref = ref + 0.025;
 % Constantes
@@ -24,6 +24,9 @@ lambda = 0.0001;
   
 min_freq = 0.2;
 max_freq = 5;
+
+sigma_s = 300e-4; % desviación estándar del ruido de sensor
+sigma_p = 500e-4; % desviación estandar del ruido de proceso
 
 min_amplitude = 0;
 max_amplitude = 0.03;
@@ -67,7 +70,7 @@ for ii = 1:length(ref)
 
     time (ii) = toc;
     % Simulamos la acción de control
-    [t_ode, x] = step(u(1), 0, T_c, [x0(1) x2]);
+    [t_ode, x] = step(u(1), 0, T_c, [x0(1) x2],sigma_s, sigma_p);
     % Actualizamos condiciones iniciales
     % x0 = [x(end,1), x(end,2)]; % Actualiza el estado inicial para el próximo paso
     x0(1, 2:end) = x0(1, 1:end-1);

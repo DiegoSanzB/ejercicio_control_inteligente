@@ -23,7 +23,7 @@ max_amplitude = 0.04;
 aprbs = generate_aprbs(T_c, T_sim, min_freq, max_freq, min_amplitude, max_amplitude);
 ref = aprbs*-1;
 ref = generate_ramp(T_sim, T_c, -1*max_amplitude, -1*min_amplitude);
-ref = generate_sine(T_sim, T_c, -0.004, -0.004, -0.038, min_freq, -1);
+% ref = generate_sine(T_sim, T_c, -0.004, -0.004, -0.038, min_freq, -1);
 plot(ref*100)
     U = [];
     X = [];
