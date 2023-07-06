@@ -57,6 +57,7 @@ for ii = 1:length(ref)
 
 %     Crea una matriz inicial para el enjambre basándose en u
     
+    tic
     initial_swarm = repmat(u, [options.SwarmSize, 1]);
     options.InitialSwarmMatrix = initial_swarm;
     
@@ -64,6 +65,7 @@ for ii = 1:length(ref)
     % Aplica PSO para optimizar u
     u = particleswarm(fun, nvars, lb, ub, options);
 
+    time (ii) = toc;
     % Simulamos la acción de control
     [t_ode, x] = step(u(1), 0, T_c, [x0(1) x2]);
     % Actualizamos condiciones iniciales
