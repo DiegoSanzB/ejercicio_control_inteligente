@@ -53,6 +53,8 @@ n = length(s);
 s_l = s(1:n/2);
 s_u = s(n/2+1:end);
 
+time = zeros(length(ref));
+
 %% Iteramos por las distintas acciones de control
 for ii = 1:length(ref)
     disp(ii)
@@ -60,18 +62,23 @@ for ii = 1:length(ref)
 
     % Función de costo que se utilizará en PSO
     fun = @(u) cost_function_ts_robusto(u, lambda, ref(ii), x0, u0, model, s_l, s_u, eliminated_regressors, u_prev);
-
-%     Crea una matriz inicial para el enjambre basándose en u
     
+%     Crea una matriz inicial para el enjambre basándose en u
+    tic
+
     initial_swarm = repmat(u, [options.SwarmSize, 1]);
     options.InitialSwarmMatrix = initial_swarm;
     
-
+    
     % Aplica PSO para optimizar u
     u = particleswarm(fun, nvars, lb, ub, options);
+        
+    time(ii) = toc;
 
     % Simulamos la acción de control
     [t_ode, x] = step(u(1), 0, T_c, [x0(1) x2]);
+
+
     % Actualizamos condiciones iniciales
     % x0 = [x(end,1), x(end,2)]; % Actualiza el estado inicial para el próximo paso
     x0(1, 2:end) = x0(1, 1:end-1);
