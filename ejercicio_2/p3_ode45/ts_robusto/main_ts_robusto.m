@@ -3,16 +3,16 @@ close all
 clc
 
 %% Load Data and Model %%
-addpath('ejercicio_2/p3_ode45/')
-addpath('ejercicio_2/p3_ode45/ts/')
-addpath('ejercicio_2/toolbox_difuso/')
-addpath('ejercicio_2/p3_ode45/Referencias')
-load('ejercicio_2/p3_ode45/ts/maglev_ts_model.mat')
-load('ejercicio_2/p3_ode45/ts/regresores_eliminados_modelo_ts.mat')
-load('ejercicio_2/p3_ode45/ts/spreads_ts_model.mat')
+addpath('C:\Users\mp204\OneDrive\Desktop\2023\Control Inteligente\ejercicio_control_inteligente-ejercicio_1\ejercicio_control_inteligente-ejercicio_1\ejercicio_2/p3_ode45/')
+addpath('C:\Users\mp204\OneDrive\Desktop\2023\Control Inteligente\ejercicio_control_inteligente-ejercicio_1\ejercicio_control_inteligente-ejercicio_1\ejercicio_2/p3_ode45/ts/')
+addpath('C:\Users\mp204\OneDrive\Desktop\2023\Control Inteligente\ejercicio_control_inteligente-ejercicio_1\ejercicio_control_inteligente-ejercicio_1\ejercicio_2/toolbox_difuso/')
+addpath('C:\Users\mp204\OneDrive\Desktop\2023\Control Inteligente\ejercicio_control_inteligente-ejercicio_1\ejercicio_control_inteligente-ejercicio_1\ejercicio_2/p3_ode45/Referencias')
+load('C:\Users\mp204\OneDrive\Desktop\2023\Control Inteligente\ejercicio_control_inteligente-ejercicio_1\ejercicio_control_inteligente-ejercicio_1\ejercicio_2/p3_ode45/ts/maglev_ts_model.mat')
+load('C:\Users\mp204\OneDrive\Desktop\2023\Control Inteligente\ejercicio_control_inteligente-ejercicio_1\ejercicio_control_inteligente-ejercicio_1\ejercicio_2/p3_ode45/ts/regresores_eliminados_modelo_ts.mat')
+load('C:\Users\mp204\OneDrive\Desktop\2023\Control Inteligente\ejercicio_control_inteligente-ejercicio_1\ejercicio_control_inteligente-ejercicio_1\ejercicio_2/p3_ode45/ts/spreads_ts_model.mat')
 
-load('ejercicio_2/p3_ode45/Referencias/ref_rampa.mat')
-% load('ejercicio_2/p3_ode45/Referencias/ref_seno.mat')
+% load('ejercicio_2/p3_ode45/Referencias/ref_rampa.mat')
+load('ejercicio_2/p3_ode45/Referencias/ref_seno.mat')
 % ref = ref + 0.025;
 % Constantes
 T_c = 0.001;
