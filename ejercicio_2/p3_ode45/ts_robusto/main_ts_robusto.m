@@ -7,8 +7,10 @@ addpath('ejercicio_2/p3_ode45/')
 addpath('ejercicio_2/p3_ode45/ts/')
 addpath('ejercicio_2/toolbox_difuso/')
 addpath('ejercicio_2/p3_ode45/Referencias')
-load('ejercicio_2/p3_ode45/ts/maglev_ts_model_new.mat')
-load('ejercicio_2/p3_ode45/ts/regresores_eliminados_modelo_ts_new.mat')
+load('ejercicio_2/p3_ode45/ts_robusto/maglev_ts_model_robusto_new.mat')
+load('ejercicio_2/p3_ode45/ts_robusto/regresores_eliminados_modelo_ts_robusto_new.mat')
+load('ejercicio_2/p3_ode45/ts_robusto/spreads_ts_model_robusto_new_10000_20000.mat')
+
 load('ejercicio_2/p3_ode45/Referencias/ref_rampa.mat')
 % load('ejercicio_2/p3_ode45/Referencias/ref_seno.mat')
 % ref = ref + 0.025;
@@ -47,13 +49,17 @@ x0 = x0*ones(1, regs);
 u0 = -0.02*ones(1, regs);
 u_prev = -0.02;
 
+n = length(s);    
+s_l = s(1:n/2);
+s_u = s(n/2+1:end);
+
 %% Iteramos por las distintas acciones de control
 for ii = 1:length(ref)
     disp(ii)
     count = count + 1;
 
     % Función de costo que se utilizará en PSO
-    fun = @(u) cost_function_ts(u, lambda, ref(ii), x0, u0, model, eliminated_regressors, u_prev);
+    fun = @(u) cost_function_ts_robusto(u, lambda, ref(ii), x0, u0, model, s_l, s_u, eliminated_regressors, u_prev);
 
 %     Crea una matriz inicial para el enjambre basándose en u
     
